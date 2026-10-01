@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CodeBot | Generador Web</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#06152f,#0d47a1,#1565c0);
+    color:white;
+}
+
+/* HEADER */
+
+header{
+    padding:25px 20px;
+    text-align:center;
+    background:rgba(0,0,0,.25);
+    border-bottom:1px solid rgba(255,255,255,.15);
+}
+
+.logo{
+    font-size:32px;
+    font-weight:bold;
+}
+
+.logo i{
+    color:#64b5f6;
+}
+
+header p{
+    margin-top:8px;
+    color:#dbeafe;
+}
+
+/* CONTENEDOR */
+
+.container{
+    width:95%;
+    max-width:1200px;
+    margin:30px auto;
+}
+
+/* CHAT */
+
+.chat{
+    background:white;
+    color:#111827;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+}
+
+/* MENSAJES */
+
+.chat-header{
+    background:#0d47a1;
+    color:white;
+    padding:18px;
+}
+
+.chat-header h2{
+    font-size:20px;
+}
+
+.messages{
+    min-height:230px;
+    max-height:350px;
+    overflow-y:auto;
+    padding:20px;
+    background:#f4f7fb;
+}
+
+.bot,
+.user{
+    max-width:80%;
+    padding:13px 16px;
+    margin-bottom:15px;
+    border-radius:15px;
+    line-height:1.5;
+}
+
+.bot{
+    background:#dbeafe;
+    color:#0d47a1;
+    border-bottom-left-radius:3px;
+}
+
+.user{
+    background:#1565c0;
+    color:white;
+    margin-left:auto;
+    border-bottom-right-radius:3px;
+}
+
+/* INPUT */
+
+.input-area{
+    display:flex;
+    gap:10px;
+    padding:15px;
+    background:white;
+    border-top:1px solid #ddd;
+}
+
+.input-area input{
+    flex:1;
+    padding:15px;
+    border:2px solid #d1d5db;
+    border-radius:12px;
+    outline:none;
+    font-size:16px;
+}
+
+.input-area input:focus{
+    border-color:#1565c0;
+}
+
+.send{
+    width:55px;
+    border:none;
+    border-radius:12px;
+    background:#1565c0;
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+}
+
+.send:hover{
+    background:#0d47a1;
+}
+
+/* CÓDIGO */
+
+.code-section{
+    margin-top:25px;
+    background:#06152f;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+
+.code-header{
+    padding:15px 20px;
+    background:#0d47a1;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.code-header h2{
+    font-size:18px;
+}
+
+.copy{
+    border:none;
+    padding:10px 16px;
+    border-radius:8px;
+    background:#42a5f5;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.copy:hover{
+    background:#64b5f6;
+}
+
+pre{
+    margin:0;
+    padding:20px;
+    min-height:300px;
+    max-height:550px;
+    overflow:auto;
+    background:#031027;
+}
+
+code{
+    color:#42a5f5;
+    font-family:Consolas,monospace;
+    font-size:14px;
+    line-height:1.6;
+    white-space:pre;
+}
+
+/* BOTONES RÁPIDOS */
+
+.examples{
+    margin-top:20px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.examples button{
+    border:none;
+    padding:10px 15px;
+    border-radius:20px;
+    background:white;
+    color:#0d47a1;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.examples button:hover{
+    background:#bbdefb;
+}
+
+/* FOOTER */
+
+footer{
+    text-align:center;
+    padding:25px;
+    color:#bfdbfe;
+}
+
+@media(max-width:600px){
+
+    .logo{
+        font-size:25px;
+    }
+
+    .input-area{
+        flex-direction:column;
+    }
+
+    .send{
+        width:100%;
+        height:50px;
+    }
+
+    .bot,
+    .user{
+        max-width:95%;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        <i class="fa-solid fa-robot"></i>
+        CodeBot
+    </div>
+
+    <p>Generador de páginas web</p>
+
+</header>
+
+
+<div class="container">
+
+    <!-- CHAT -->
+
+    <div class="chat">
+
+        <div class="chat-header">
+
+            <h2>
+                <i class="fa-solid fa-code"></i>
+                ¿Qué página web quieres crear?
+            </h2>
+
+        </div>
+
+
+        <div class="messages" id="messages">
+
+            <div class="bot">
+                👋 ¡Hola! Soy CodeBot.<br><br>
+
+                Dime qué página quieres crear y te
+                generaré un código HTML completo.
+            </div>
+
+        </div>
+
+
+        <div class="input-area">
+
+            <input
+                type="text"
+                id="prompt"
+                placeholder="Ej: crea una página para un restaurante..."
+                onkeydown="enterEnviar(event)"
+            >
+
+            <button class="send" onclick="generar()">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- EJEMPLOS -->
+
+    <div class="examples">
+
+        <button onclick="ejemplo('una tienda de ropa moderna')">
+            👕 Tienda
+        </button>
+
+        <button onclick="ejemplo('un restaurante')">
+            🍔 Restaurante
+        </button>
+
+        <button onclick="ejemplo('una página de ciclismo')">
+            🚴 Ciclismo
+        </button>
+
+        <button onclick="ejemplo('un salón de belleza')">
+            💇 Salón
+        </button>
+
+        <button onclick="ejemplo('una página para una barbería')">
+            💈 Barbería
+        </button>
+
+        <button onclick="ejemplo('una página para un negocio')">
+            🏢 Negocio
+        </button>
+
+    </div>
+
+
+    <!-- CÓDIGO -->
+
+    <div class="code-section">
+
+        <div class="code-header">
+
+            <h2>
+                <i class="fa-solid fa-file-code"></i>
+                Código generado
+            </h2>
+
+            <button class="copy" onclick="copiarCodigo()">
+                <i class="fa-solid fa-copy"></i>
+                Copiar
+            </button>
+
+        </div>
+
+
+        <pre><code id="codigo">// El código aparecerá aquí...</code></pre>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <i class="fa-solid fa-code"></i>
+    CodeBot © 2026
+
+</footer>
+
+
+<script>
+
+const codigo = document.getElementById("codigo");
+const messages = document.getElementById("messages");
+const input = document.getElementById("prompt");
+
+
+function enterEnviar(event){
+
+    if(event.key === "Enter"){
+        generar();
+    }
+
+}
+
+
+function ejemplo(texto){
+
+    input.value = texto;
+
+    generar();
+
+}
+
+
+function agregarMensaje(texto,tipo){
+
+    const div = document.createElement("div");
+
+    div.className = tipo;
+
+    div.innerHTML = texto;
+
+    messages.appendChild(div);
+
+    messages.scrollTop = messages.scrollHeight;
+
+}
+
+
+function generar(){
+
+    const solicitud = input.value.trim();
+
+    if(solicitud === ""){
+
+        alert("Escribe qué página quieres crear.");
+
+        return;
+
+    }
+
+
+    agregarMensaje(
+        solicitud,
+        "user"
+    );
+
+
+    agregarMensaje(
+        "🤖 Creando tu página web...",
+        "bot"
+    );
+
+
+    const texto = solicitud.toLowerCase();
+
+
+    let html = crearPagina(texto);
+
+
+    setTimeout(()=>{
+
+        codigo.textContent = html;
+
+        agregarMensaje(
+            "✅ ¡Listo! He generado el código. Puedes copiarlo con el botón azul.",
+            "bot"
+        );
+
+    },500);
+
+
+    input.value = "";
+
+}
+
+
+function crearPagina(tipo){
+
+let titulo = "Mi Página Web";
+let descripcion = "Bienvenidos a nuestra página web.";
+
+if(tipo.includes("restaurante")){
+
+    titulo = "Restaurante Delicioso";
+
+    descripcion =
+    "Descubre nuestros deliciosos platos y disfruta una experiencia increíble.";
+
+}
+
+else if(tipo.includes("tienda") || tipo.includes("ropa")){
+
+    titulo = "Fashion Store";
+
+    descripcion =
+    "Descubre nuestra nueva colección de ropa.";
+
+}
+
+else if(tipo.includes("ciclismo")){
+
+    titulo = "Ciclismo Costa Rica";
+
+    descripcion =
+    "Resultados, carreras, ciclistas y noticias de ciclismo.";
+
+}
+
+else if(tipo.includes("belleza") || tipo.includes("salón")){
+
+    titulo = "Salón de Belleza";
+
+    descripcion =
+    "Cortes, tratamientos, keratinas y mucho más.";
+
+}
+
+else if(tipo.includes("barber")){
+
+    titulo = "Barbería Premium";
+
+    descripcion =
+    "Cortes modernos, barba y estilos personalizados.";
+
+}
+
+else if(tipo.includes("negocio")){
+
+    titulo = "Mi Negocio";
+
+    descripcion =
+    "Conoce nuestros productos y servicios.";
+
+}
+
+
+return `<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>${titulo}</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f1f5f9;
+color:#172033;
+}
+
+header{
+background:linear-gradient(135deg,#0d47a1,#1976d2);
+color:white;
+padding:60px 20px;
+text-align:center;
+}
+
+header h1{
+font-size:42px;
+margin-bottom:15px;
+}
+
+header p{
+font-size:18px;
+}
+
+.container{
+max-width:1100px;
+margin:40px auto;
+padding:20px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:18px;
+box-shadow:
+0 8px 25px rgba(0,0,0,.1);
+}
+
+.card h2{
+color:#1565c0;
+margin-bottom:12px;
+}
+
+.button{
+display:inline-block;
+margin-top:20px;
+padding:13px 25px;
+background:#1565c0;
+color:white;
+text-decoration:none;
+border-radius:30px;
+}
+
+footer{
+margin-top:50px;
+padding:30px;
+background:#0d47a1;
+color:white;
+text-align:center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>${titulo}</h1>
+
+<p>${descripcion}</p>
+
+<a class="button" href="#servicios">
+Conocer más
+</a>
+
+</header>
+
+
+<div class="container" id="servicios">
+
+<div class="cards">
+
+<div class="card">
+
+<h2>Servicio 1</h2>
+
+<p>
+Información sobre nuestro primer servicio.
+</p>
+
+<a class="button" href="#">
+Ver más
+</a>
+
+</div>
+
+
+<div class="card">
+
+<h2>Servicio 2</h2>
+
+<p>
+Información sobre nuestro segundo servicio.
+</p>
+
+<a class="button" href="#">
+Ver más
+</a>
+
+</div>
+
+
+<div class="card">
+
+<h2>Servicio 3</h2>
+
+<p>
+Información sobre nuestro tercer servicio.
+</p>
+
+<a class="button" href="#">
+Ver más
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+
+<footer>
+
+© 2026 ${titulo}
+
+</footer>
+
+</body>
+
+</html>`;
+
+}
+
+
+function copiarCodigo(){
+
+    const texto = codigo.textContent;
+
+    navigator.clipboard.writeText(texto)
+    .then(()=>{
+
+        alert("✅ Código copiado correctamente.");
+
+    })
+    .catch(()=>{
+
+        alert("No se pudo copiar automáticamente.");
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>
